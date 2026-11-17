@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
+<title>Ego/Dabe</title>
+<style>
+:root{
+  --bg:#0a0a0b; --bg2:#121214; --card:#16161a; --line:#2a2417;
+  --gold:#d4af37; --gold2:#f5d776; --gold3:#8a6d1d; --text:#f1ead6; --mut:#9b9279;
+  --ok:#5fd38d; --bad:#ff6b6b; --warn:#ffb84d;
+  --gg:linear-gradient(135deg,#fff1a8 0%,#f5d776 30%,#d4af37 60%,#8a6d1d 100%);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Vazirmatn","Segoe UI",Tahoma,system-ui,sans-serif;min-height:100%}
+body{background:
+  radial-gradient(900px 500px at 50% -10%,rgba(212,175,55,.13),transparent 60%),
+  radial-gradient(600px 400px at 100% 100%,rgba(212,175,55,.06),transparent 60%),var(--bg);
+  padding:env(safe-area-inset-top) 0 calc(76px + env(safe-area-inset-bottom))}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.logo{text-align:center;padding:18px 0 6px;direction:ltr}
+.logo b{display:block;font-size:34px;letter-spacing:6px;font-weight:800;background:var(--gg);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% 100%;animation:shine 6s linear infinite}
+.logo small{color:var(--mut);letter-spacing:3px;font-size:11px}
+@keyframes shine{to{background-position:-200% 0}}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;
+  box-shadow:0 0 0 1px rgba(212,175,55,.05) inset,0 10px 30px rgba(0,0,0,.4)}
+.card h3{margin:0 0 12px;font-size:15px;color:var(--gold2);font-weight:700;letter-spacing:.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:#0e0e10;border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat span{display:block;color:var(--mut);font-size:12px;margin-bottom:6px}
+.stat b{font-size:16px}
+.bar{height:6px;border-radius:6px;background:#201c10;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--gg);width:0;transition:width .6s}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-inline-end:6px;background:var(--bad);box-shadow:0 0 8px currentColor;color:var(--bad)}
+.dot.on{background:var(--ok);color:var(--ok)}
+.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #2a2417}
+.row:last-child{border:0}
+.row span:first-child{color:var(--mut)}
+input,select,textarea{width:100%;background:#0c0c0e;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px;font:inherit;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{display:block;color:var(--mut);font-size:12px;margin:12px 0 6px}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:11px 16px;color:#1a1405;font-weight:700;background:var(--gg);box-shadow:0 4px 18px rgba(212,175,55,.25)}
+button:active{transform:scale(.97)}
+button.ghost{background:transparent;color:var(--gold2);border:1px solid var(--gold3);box-shadow:none}
+button.bad{background:transparent;color:var(--bad);border:1px solid #5a2a2a;box-shadow:none}
+.tabs{position:fixed;inset:auto 0 0 0;background:rgba(10,10,11,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  display:flex;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:10}
+.tabs a{flex:1;text-align:center;color:var(--mut);font-size:11px;padding:6px 2px;border-radius:12px;cursor:pointer;user-select:none}
+.tabs a i{display:block;font-style:normal;font-size:20px;margin-bottom:2px;filter:grayscale(1) opacity(.6)}
+.tabs a.on{color:var(--gold2)}.tabs a.on i{filter:none}
+.pane{display:none}.pane.on{display:block}
+#msgs{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.m{max-width:86%;padding:10px 13px;border-radius:16px;line-height:1.7;white-space:pre-wrap;word-break:break-word;font-size:14px}
+.m.u{align-self:flex-start;background:var(--gg);color:#1a1405;border-end-start-radius:4px}
+.m.a{align-self:flex-end;background:#1c1b16;border:1px solid var(--line);border-end-end-radius:4px}
+.m.ap{align-self:stretch;max-width:100%;border:1px solid var(--gold3);background:#17140a;border-radius:14px}
+.m.ap code{display:block;direction:ltr;text-align:left;background:#0a0a0b;padding:8px;border-radius:8px;margin:8px 0;color:var(--gold2);font-size:12px;white-space:pre-wrap}
+.m.ap .b{display:flex;gap:8px}
+.send{display:flex;gap:8px;margin-top:10px}.send input{flex:1}
+pre.log{direction:ltr;text-align:left;background:#07070a;border:1px solid var(--line);border-radius:12px;padding:12px;height:60vh;overflow:auto;font-size:11px;line-height:1.5;color:#cfc6a8;white-space:pre-wrap}
+.task{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px dashed #2a2417}
+.task small{color:var(--mut);display:block}
+#login{min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+.err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+.top{display:flex;justify-content:flex-end;gap:8px}
+.top button{padding:6px 12px;font-size:12px}
+audio{width:100%;margin-top:6px}
+.m img,.m video{display:block;max-width:100%;border-radius:12px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap" id="loginView" style="display:none">
+  <div id="login">
+    <div class="logo"><b>EGO/DABE</b><small>PERSONAL AI BUTLER</small></div>
+    <div class="card">
+      <label data-t="password">Password</label>
+      <input id="pw" type="password" autocomplete="current-password">
+      <div style="height:12px"></div>
+      <button id="loginBtn" style="width:100%" data-t="login">Login</button>
+      <div class="err" id="loginErr"></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="appView" style="display:none">
+  <div class="top"><button class="ghost" id="langBtn">EN</button><button class="ghost" id="outBtn" data-t="logout">Logout</button></div>
+  <div class="logo"><b>EGO/DABE</b><small>PERSONAL AI BUTLER</small></div>
+
+  <section class="pane on" id="p-home">
+    <div class="card"><h3 data-t="sys">System</h3>
+      <div class="grid">
+        <div class="stat"><span>CPU</span><b id="cpu">-</b><div class="bar"><i id="cpuB"></i></div></div>
+        <div class="stat"><span>RAM</span><b id="ram">-</b><div class="bar"><i id="ramB"></i></div></div>
+        <div class="stat"><span data-t="disk">Disk</span><b id="disk">-</b><div class="bar"><i id="diskB"></i></div></div>
+        <div class="stat"><span data-t="uptime">Uptime</span><b id="up">-</b></div>
+      </div></div>
+    <div class="card"><h3 data-t="agent">Agent</h3>
+      <div class="row"><span data-t="bot">Telegram bot</span><span id="sBot"></span></div>
+      <div class="row"><span data-t="owner">Owner linked</span><span id="sOwner"></span></div>
+      <div class="row"><span data-t="account">Telegram account</span><span id="sAcc"></span></div>
+      <div class="row"><span data-t="ai">AI model</span><span id="sAi" style="direction:ltr"></span></div>
+      <div class="row"><span data-t="approval">Approval mode</span><span id="sAp"></span></div>
+      <div class="row"><span data-t="tz">Timezone</span><span id="sTz"></span></div>
+    </div>
+  </section>
+
+  <section class="pane" id="p-chat">
+    <div class="card"><div id="msgs"></div>
+      <div class="send"><input id="chatIn" data-ph="msg" placeholder="..."><button id="sendBtn">➤</button></div>
+      <div style="margin-top:10px"><button class="ghost" id="clearBtn" style="padding:6px 12px;font-size:12px" data-t="clear">Clear memory</button></div>
+    </div>
+  </section>
+
+  <section class="pane" id="p-tasks"><div class="card"><h3 data-t="tasks">Scheduled tasks</h3><div id="taskList"></div></div></section>
+  <section class="pane" id="p-logs"><div class="card"><h3 data-t="logs">Live logs</h3><pre class="log" id="logBox"></pre></div></section>
+
+  <section class="pane" id="p-set"><div class="card"><h3 data-t="settings">Settings</h3>
+    <label data-t="provider">AI provider</label><select id="setProv"></select>
+    <label data-t="model">Model name</label><input id="setModel" dir="ltr">
+    <label data-t="apikey">API key (leave empty to keep)</label><input id="setKey" type="password" dir="ltr" autocomplete="off">
+    <label data-t="approval">Approval mode</label>
+    <select id="setAp"><option value="all" data-t="ap_all">Ask for everything</option><option value="dangerous" data-t="ap_dang">Only dangerous</option><option value="none" data-t="ap_none">Never ask</option></select>
+    <label data-t="tz">Timezone</label><input id="setTz" dir="ltr">
+    <div style="height:14px"></div><button id="saveBtn" style="width:100%" data-t="save">Save</button>
+    <div class="err" id="saveMsg" style="color:var(--ok)"></div>
+  </div></section>
+</div>
+
+<nav class="tabs" id="tabs" style="display:none">
+  <a data-p="home" class="on"><i>🏠</i><span data-t="t_home">Home</span></a>
+  <a data-p="chat"><i>💬</i><span data-t="t_chat">Chat</span></a>
+  <a data-p="tasks"><i>⏰</i><span data-t="t_tasks">Tasks</span></a>
+  <a data-p="logs"><i>📜</i><span data-t="t_logs">Logs</span></a>
+  <a data-p="set"><i>⚙️</i><span data-t="t_set">Settings</span></a>
+</nav>
+
+<script>
+const T={
+fa:{password:"رمز عبور",login:"ورود",logout:"خروج",sys:"سیستم",disk:"دیسک",uptime:"مدت فعالیت",agent:"ایجنت",bot:"ربات تلگرام",owner:"مالک متصل است",account:"اکانت تلگرام",ai:"مدل هوش مصنوعی",approval:"حالت تایید",tz:"منطقه زمانی",
+clear:"پاک کردن حافظه",tasks:"کارهای زمان‌بندی‌شده",logs:"لاگ زنده",settings:"تنظیمات",provider:"ارائه‌دهنده AI",model:"نام مدل",apikey:"کلید API (خالی = بدون تغییر)",ap_all:"برای همه چیز تایید بگیر",ap_dang:"فقط کارهای خطرناک",ap_none:"هرگز نپرس",save:"ذخیره",
+t_home:"خانه",t_chat:"گفتگو",t_tasks:"کارها",t_logs:"لاگ",t_set:"تنظیمات",msg:"پیام خود را بنویسید…",on:"فعال",off:"غیرفعال",saved:"ذخیره شد ✓",none:"موردی نیست",del:"حذف",approve:"تایید",deny:"رد",need:"درخواست تایید",min:"دقیقه",every:"تکرار هر",wrong:"خطا"},
+en:{password:"Password",login:"Login",logout:"Logout",sys:"System",disk:"Disk",uptime:"Uptime",agent:"Agent",bot:"Telegram bot",owner:"Owner linked",account:"Telegram account",ai:"AI model",approval:"Approval mode",tz:"Timezone",
+clear:"Clear memory",tasks:"Scheduled tasks",logs:"Live logs",settings:"Settings",provider:"AI provider",model:"Model name",apikey:"API key (empty = keep)",ap_all:"Ask for everything",ap_dang:"Only dangerous",ap_none:"Never ask",save:"Save",
+t_home:"Home",t_chat:"Chat",t_tasks:"Tasks",t_logs:"Logs",t_set:"Settings",msg:"Type a message…",on:"ON",off:"OFF",saved:"Saved ✓",none:"Nothing here",del:"Delete",approve:"Approve",deny:"Deny",need:"Approval needed",min:"min",every:"repeat every",wrong:"Error"}};
+let lang=localStorage.getItem("lang")||"fa";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const t=k=>T[lang][k]||k;
+function applyLang(){
+  document.documentElement.lang=lang;document.documentElement.dir=lang==="fa"?"rtl":"ltr";
+  $$("[data-t]").forEach(e=>e.textContent=t(e.dataset.t));
+  $$("[data-ph]").forEach(e=>e.placeholder=t(e.dataset.ph));
+  $("#langBtn").textContent=lang==="fa"?"EN":"فا";
+}
+async function api(p,o={}){
+  const r=await fetch(p,{credentials:"same-origin",headers:{"Content-Type":"application/json"},...o,body:o.body?JSON.stringify(o.body):undefined});
+  if(r.status===401&&p!=="/api/login"){showLogin();throw 0}
+  return r.json();
+}
+function showLogin(){$("#loginView").style.display="";$("#appView").style.display="none";$("#tabs").style.display="none"}
+function showApp(){$("#loginView").style.display="none";$("#appView").style.display="";$("#tabs").style.display="flex";refresh();loadSettings()}
+async function login(){
+  const r=await api("/api/login",{method:"POST",body:{password:$("#pw").value}});
+  if(r.ok){$("#pw").value="";showApp()}else $("#loginErr").textContent=r.error||t("wrong");
+}
+const dot=on=>`<span class="dot ${on?"on":""}"></span>${on?t("on"):t("off")}`;
+function bar(id,v){$("#"+id).textContent=v+"%";$("#"+id+"B").style.width=v+"%"}
+async function refresh(){
+  try{const s=await api("/api/status");
+    bar("cpu",s.cpu);bar("ram",s.ram);bar("disk",s.disk);
+    $("#up").textContent=s.uptime_min>=60?Math.floor(s.uptime_min/60)+"h "+s.uptime_min%60+"m":s.uptime_min+"m";
+    $("#sBot").innerHTML=dot(s.bot);$("#sOwner").innerHTML=dot(s.owner);$("#sAcc").innerHTML=dot(s.account);
+    $("#sAi").textContent=s.provider+" / "+s.model;$("#sAp").textContent=s.approval;$("#sTz").textContent=s.timezone;
+  }catch(e){}
+}
+// tabs
+$$("#tabs a").forEach(a=>a.onclick=()=>{
+  $$("#tabs a").forEach(x=>x.classList.toggle("on",x===a));
+  $$(".pane").forEach(p=>p.classList.toggle("on",p.id==="p-"+a.dataset.p));
+  if(a.dataset.p==="tasks")loadTasks(); if(a.dataset.p==="logs")loadLogs();
+});
+const active=()=>($("#tabs a.on")||{dataset:{}}).dataset.p;
+// chat
+let since=0;
+function addMsg(cls,text){const d=document.createElement("div");d.className="m "+cls;d.textContent=text;$("#msgs").appendChild(d);$("#msgs").scrollTop=1e9;return d}
+function addApproval(ev){
+  const d=document.createElement("div");d.className="m ap";
+  d.innerHTML=`<b>🔐 ${t("need")}: ${ev.tool}</b>`;
+  const c=document.createElement("code");c.textContent=Object.entries(ev.args||{}).map(([k,v])=>k+": "+v).join("\n");d.appendChild(c);
+  const b=document.createElement("div");b.className="b";
+  const ok=document.createElement("button");ok.textContent="✅ "+t("approve");
+  const no=document.createElement("button");no.className="bad";no.textContent="❌ "+t("deny");
+  const done=v=>{b.remove();const s=document.createElement("div");s.textContent=v?"✅":"❌";d.appendChild(s);api("/api/approve",{method:"POST",body:{id:ev.id,ok:v}})};
+  ok.onclick=()=>done(true);no.onclick=()=>done(false);b.append(ok,no);d.appendChild(b);$("#msgs").appendChild(d);$("#msgs").scrollTop=1e9;
+}
+function addMedia(e){
+  const d=addMsg("a",e.caption||"");let el;
+  if(e.kind==="image"){el=document.createElement("img");el.src=e.url}
+  else if(e.kind==="video"){el=document.createElement("video");el.src=e.url;el.controls=true;el.playsInline=true}
+  else if(e.kind==="audio"){el=document.createElement("audio");el.src=e.url;el.controls=true}
+  else{el=document.createElement("a");el.href=e.url;el.download=e.name||"file";el.textContent="⬇ "+(e.name||"file");el.style.color="var(--gold2)"}
+  d.appendChild(el);$("#msgs").scrollTop=1e9;
+}
+async function poll(){
+  if(active()!=="chat")return;
+  try{const r=await api("/api/events?since="+since);since=r.next;
+    for(const e of r.events){
+      if(e.type==="user")addMsg("u",e.text);
+      else if(e.type==="assistant")addMsg("a",e.text);
+      else if(e.type==="approval")addApproval(e);
+      else if(e.type==="media")addMedia(e);
+    }}catch(e){}
+}
+async function send(){const v=$("#chatIn").value.trim();if(!v)return;$("#chatIn").value="";await api("/api/chat",{method:"POST",body:{message:v}})}
+// tasks / logs
+async function loadTasks(){
+  const ts=await api("/api/tasks");const box=$("#taskList");box.innerHTML="";
+  if(!ts.length){box.textContent=t("none");return}
+  ts.forEach(k=>{const d=document.createElement("div");d.className="task";
+    const l=document.createElement("div");l.textContent=k.text;const s=document.createElement("small");
+    s.textContent=k.due_local+(k.repeat?` · ${t("every")} ${k.repeat} ${t("min")}`:"")+` · ${k.mode}→${k.target}`;l.appendChild(s);
+    const b=document.createElement("button");b.className="bad";b.textContent=t("del");b.onclick=async()=>{await api("/api/tasks/"+k.id,{method:"DELETE"});loadTasks()};
+    d.append(l,b);box.appendChild(d)});
+}
+async function loadLogs(){const r=await api("/api/logs");const b=$("#logBox");b.textContent=r.lines.join("\n")||"-";b.scrollTop=1e9}
+// settings
+let SET=null;
+async function loadSettings(){
+  SET=await api("/api/settings");const sel=$("#setProv");sel.innerHTML="";
+  for(const [k,v] of Object.entries(SET.providers)){const o=document.createElement("option");o.value=k;o.textContent=v.label+(v.key_set?" ✓":"");sel.appendChild(o)}
+  sel.value=SET.provider;$("#setAp").value=SET.approval;$("#setTz").value=SET.timezone;fillModel();
+}
+function fillModel(){$("#setModel").value=SET.providers[$("#setProv").value].model;$("#setKey").value=""}
+$("#setProv").onchange=fillModel;
+$("#saveBtn").onclick=async()=>{
+  const p=$("#setProv").value;const body={provider:p,model_for:p,model:$("#setModel").value,approval:$("#setAp").value,timezone:$("#setTz").value,lang};
+  if($("#setKey").value){body.key_for=p;body.key=$("#setKey").value}
+  const r=await api("/api/settings",{method:"POST",body});
+  $("#saveMsg").style.color=r.ok?"var(--ok)":"var(--bad)";$("#saveMsg").textContent=r.ok?t("saved"):(r.detail||t("wrong"));
+  if(r.ok){loadSettings();refresh()}
+};
+$("#loginBtn").onclick=login;$("#pw").onkeydown=e=>{if(e.key==="Enter")login()};
+$("#sendBtn").onclick=send;$("#chatIn").onkeydown=e=>{if(e.key==="Enter")send()};
+$("#clearBtn").onclick=async()=>{await api("/api/clear",{method:"POST"});$("#msgs").innerHTML="";since=0};
+$("#outBtn").onclick=async()=>{await api("/api/logout",{method:"POST"});showLogin()};
+$("#langBtn").onclick=()=>{lang=lang==="fa"?"en":"fa";localStorage.setItem("lang",lang);applyLang();refresh();if(SET)loadSettings()};
+applyLang();
+api("/api/me").then(showApp).catch(showLogin);
+setInterval(()=>{if(!document.hidden){refresh();poll();if(active()==="logs")loadLogs()}},2500);
+setInterval(()=>{if(active()==="chat"&&!document.hidden)poll()},1000);
+</script>
+</body>
+</html>
